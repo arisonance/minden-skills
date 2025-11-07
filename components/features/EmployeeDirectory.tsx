@@ -1,13 +1,20 @@
 import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 
 export async function EmployeeDirectory() {
   const supabase = await createClient()
 
-  // Fetch employees from Supabase
+  // Fetch employees from Supabase with role information
   const { data: employees, error } = await supabase
     .from('employees')
-    .select('*')
-    .order('id', { ascending: true })
+    .select(
+      `
+      *,
+      primary_role:roles(name),
+      primary_role_level:role_levels(level_name)
+    `
+    )
+    .order('full_name', { ascending: true })
 
   if (error) {
     console.error('Error fetching employees:', error)
@@ -49,10 +56,13 @@ export async function EmployeeDirectory() {
               </thead>
               <tbody className="bg-[#242424] divide-y divide-[#333333]">
                 {employees.map((employee: any) => (
-                  <tr key={employee.id} className="hover:bg-[#2a2a2a] transition-colors">
+                  <tr key={employee.id} className="hover:bg-[#2a2a2a] transition-colors group">
                     <td className="px-4 md:px-6 py-4">
-                      <div className="flex items-center min-w-0">
-                        <div className="w-10 h-10 bg-[#3ECF8E]/20 rounded-full flex items-center justify-center mr-3 border border-[#3ECF8E]/30 flex-shrink-0">
+                      <Link
+                        href={`/employees/${employee.id}`}
+                        className="flex items-center min-w-0"
+                      >
+                        <div className="w-10 h-10 bg-[#3ECF8E]/20 rounded-full flex items-center justify-center mr-3 border border-[#3ECF8E]/30 flex-shrink-0 group-hover:bg-[#3ECF8E]/30 transition-colors">
                           <span className="text-sm font-bold text-[#3ECF8E]">
                             {employee.full_name?.charAt(0) ||
                               employee.name?.charAt(0) ||
@@ -60,17 +70,22 @@ export async function EmployeeDirectory() {
                               '?'}
                           </span>
                         </div>
-                        <div className="text-sm font-medium text-white truncate min-w-0">
+                        <div className="text-sm font-medium text-white truncate min-w-0 group-hover:text-[#3ECF8E] transition-colors">
                           {employee.full_name ||
                             employee.name ||
                             `${employee.first_name || ''} ${employee.last_name || ''}`.trim() ||
                             'Unknown'}
                         </div>
-                      </div>
+                      </Link>
                     </td>
                     <td className="px-4 md:px-6 py-4">
                       <div className="text-sm text-gray-300 truncate">
-                        {employee.position || employee.title || '-'}
+                        {employee.primary_role?.name || employee.position || employee.title || '-'}
+                        {employee.primary_role_level?.level_name && (
+                          <span className="ml-1 text-[#3ECF8E]">
+                            {employee.primary_role_level.level_name}
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-4 md:px-6 py-4">
@@ -83,6 +98,7 @@ export async function EmployeeDirectory() {
                         <a
                           href={`mailto:${employee.email}`}
                           className="text-sm text-[#3ECF8E] hover:underline truncate block"
+                          onClick={e => e.stopPropagation()}
                         >
                           {employee.email}
                         </a>

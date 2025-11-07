@@ -1,0 +1,49 @@
+{
+  "name": "ari-jorge-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "validate-env": "node -e \"const fs = require('fs'); const path = '.env.local'; if (!fs.existsSync(path)) { console.error('❌ .env.local file not found!'); process.exit(1); } const env = fs.readFileSync(path, 'utf8'); const required = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'SUPABASE_SERVICE_ROLE_KEY']; const missing = required.filter(v => !env.includes(v)); if (missing.length > 0) { console.error('❌ Missing required environment variables:', missing.join(', ')); process.exit(1); } console.log('✅ All required environment variables present');\"",
+    "check-branch": "node -e \"const { execSync } = require('child_process'); const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim(); if (branch === 'main') { console.error('❌ You are on the main branch!'); console.error('Please create a feature branch first.'); process.exit(1); } console.log('✅ On feature branch:', branch);\"",
+    "validate": "npm run validate-env && npm run type-check && npm run lint"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.5.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.2.0",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "postcss": "^8.4.0",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,css,scss}": [
+      "prettier --write"
+    ]
+  }
+}

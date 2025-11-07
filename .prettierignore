@@ -1,0 +1,11 @@
+node_modules
+.next
+.vercel
+.husky
+dist
+build
+coverage
+*.log
+package-lock.json
+.env*
+!.env.local.example

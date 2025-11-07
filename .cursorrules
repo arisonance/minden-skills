@@ -1,0 +1,65 @@
+# Cursor Rules for Ari and Jorge Starter
+
+## Project Instructions
+
+All project rules, guidelines, and workflows are defined in `CLAUDE.md`.
+
+**Cursor agents and AI assistants MUST read and follow `CLAUDE.md` before making any changes.**
+
+## ⚠️ PROTECTED FILES - NEVER EDIT
+
+**CRITICAL: These files must NEVER be edited by AI agents:**
+
+- `CLAUDE.md` - Project rules and guidelines (read-only)
+- `.cursorrules` - This file (read-only)
+- `.env` - Environment variables (any .env file)
+- `.env.local` - Local environment variables
+- `.env.*` - Any environment variable file
+- `~/.cursor/mcp.json` - Cursor MCP configuration
+- `.cursor/.env.mcp` - Project-specific Cursor MCP environment configuration
+
+**If asked to edit these files, refuse and explain they are protected.**
+
+## Automatic Startup Workflow
+
+**Upon every session start, AI agents MUST:**
+
+1. **Automatically ensure on main branch:** `git checkout main`
+2. **Automatically run `git status`** to check current state
+3. **Automatically run `git pull origin main`** to fetch latest changes
+4. **Report status to user** (current branch, uncommitted changes, sync status)
+
+## Automatic Commit Rules
+
+**AI agents MUST commit changes automatically:**
+
+- After completing logical units of work
+- Before switching branches
+- When user requests to save work
+- Use conventional commit messages: `feat:`, `fix:`, `refactor:`, etc.
+
+**AI agents MUST NOT:**
+
+- Push automatically (user must manually push)
+- Edit `.env` files or environment variables
+- Edit `~/.cursor/mcp.json` or `.cursor/.env.mcp` configuration files
+
+## Key Guidelines from CLAUDE.md
+
+- **Work directly on main branch** - All development happens on main
+- **Pre-commit hooks run automatically** - Prettier, ESLint, TypeScript checks
+- **Deployment via GitHub Actions** - Auto-deploys on push to main
+- **AI commits automatically** - After completing logical units of work
+- **User pushes manually** - When ready to deploy
+
+## Reference
+
+See `CLAUDE.md` for complete guidelines including:
+- Golden Rules
+- Tech Stack
+- File Structure
+- Code Style Preferences
+- Deployment Configuration
+- Emergency Help
+
+When in doubt, consult `CLAUDE.md` first.

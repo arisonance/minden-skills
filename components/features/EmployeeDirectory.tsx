@@ -4,16 +4,10 @@ import Link from 'next/link'
 export async function EmployeeDirectory() {
   const supabase = await createClient()
 
-  // Fetch employees from Supabase with role information
+  // Fetch employees from Supabase (simplified query for testing)
   const { data: employees, error } = await supabase
     .from('employees')
-    .select(
-      `
-      *,
-      primary_role:roles(name),
-      primary_role_level:role_levels(level_name)
-    `
-    )
+    .select('*')
     .order('full_name', { ascending: true })
 
   if (error) {
@@ -80,17 +74,12 @@ export async function EmployeeDirectory() {
                     </td>
                     <td className="px-4 md:px-6 py-4">
                       <div className="text-sm text-gray-300 truncate">
-                        {employee.primary_role?.name || employee.position || employee.title || '-'}
-                        {employee.primary_role_level?.level_name && (
-                          <span className="ml-1 text-[#3ECF8E]">
-                            {employee.primary_role_level.level_name}
-                          </span>
-                        )}
+                        {employee.position || employee.title || 'Not assigned'}
                       </div>
                     </td>
                     <td className="px-4 md:px-6 py-4">
                       <div className="text-sm text-gray-300 truncate">
-                        {employee.department || '-'}
+                        {employee.department || 'Not assigned'}
                       </div>
                     </td>
                     <td className="px-4 md:px-6 py-4">
@@ -98,7 +87,6 @@ export async function EmployeeDirectory() {
                         <a
                           href={`mailto:${employee.email}`}
                           className="text-sm text-[#3ECF8E] hover:underline truncate block"
-                          onClick={e => e.stopPropagation()}
                         >
                           {employee.email}
                         </a>
